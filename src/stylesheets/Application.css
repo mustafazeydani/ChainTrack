@@ -1,0 +1,9 @@
+/* Global Classes */
+
+.bold {
+	-fx-font-weight: bold;
+}
+
+.text-white {
+	-fx-text-fill: white
+}

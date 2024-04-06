@@ -1,0 +1,29 @@
+/* Left Menu */
+#nav-menu {
+	-fx-background-color: linear-gradient(to bottom, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+}
+
+#nav-menu-title {
+	-fx-font-size: 25
+}
+
+#nav-menu-copyrights {
+	-fx-text-fill: white;
+}
+
+.nav-menu-button {
+	-fx-background-color: transparent;
+	-fx-background-radius: 10px;
+	-fx-text-fill: white;
+	-fx-padding: 10px;
+	-fx-border-color: white;
+	-fx-border-radius: 10px;
+}
+
+.nav-nav-button:hover {
+	-fx-text-fill: #d16ba5;
+	-fx-background-color: white;
+	-fx-border-color: transparent;
+	-fx-cursor: hand;
+}
+
