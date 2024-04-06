@@ -1,4 +1,11 @@
-/* Home styles */
+/* Home Styles */
+
 #welcome {
 	-fx-font-size: 25px;
+}
+
+/* NFT Card Styles */
+#nft-card-external-link:hover {
+	-fx-fill: #d16ba5;
+	-fx-cursor: hand;
 }

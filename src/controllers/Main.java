@@ -1,4 +1,4 @@
-package application;
+package controllers;
 	
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +14,7 @@ public class Main extends Application {
 			Parent root = FXMLLoader.load(getClass().getResource("../FXML/Main.fxml"));
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
-			primaryStage.setTitle("JavaFX and Maven");
+			primaryStage.setTitle("ChainTrack");
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
