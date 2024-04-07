@@ -1,29 +1,88 @@
 package controllers;
 
+import java.io.IOException;
+
 import java.net.URI;
+
+import javafx.event.ActionEvent;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.text.DecimalFormat;
 import java.util.ResourceBundle;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Pagination;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 
 public class Home implements Initializable {
 
+	/* Nav Menu */
+	@FXML
+    private Button HomeNavBtn;
+
+    @FXML
+    private Button MyWalletsNavBtn;
+
+    @FXML
+    private Button PortfolioNavBtn;
+
+    @FXML
+    private Button TransactionsNavBtn;
+    
+    @FXML
+    private VBox Home;
+
+    @FXML
+    private VBox MyWallets;
+    
+    @FXML
+    void ShowHome(ActionEvent event) {
+    	if(!Home.isVisible()) {
+    		Home.setVisible(true);
+    		HomeNavBtn.getStyleClass().add("nav-menu-button-focused");
+    		MyWallets.setVisible(false);
+    		MyWalletsNavBtn.getStyleClass().remove("nav-menu-button-focused");
+    	}
+    }
+
+    @FXML
+    void ShowMyWallets(ActionEvent event) {
+		if (!MyWallets.isVisible()) {
+			MyWallets.setVisible(true);
+			MyWalletsNavBtn.getStyleClass().add("nav-menu-button-focused");
+			Home.setVisible(false);
+			HomeNavBtn.getStyleClass().remove("nav-menu-button-focused");
+		}
+    }
+
+    @FXML
+    void ShowPortfolio(ActionEvent event) {
+
+    }
+
+    @FXML
+    void ShowTransactions(ActionEvent event) {
+
+    }
+    
+	
+	/* Home */
     @FXML
     private HBox NFTCardsLayout;
     
@@ -43,8 +102,8 @@ public class Home implements Initializable {
     public void initialize(URL arg0, ResourceBundle arg1) {
 		fetchNFTs();
 		fetchCryptocurrencies();
-    }
-
+	}
+    
     private void fetchNFTs() {
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -179,6 +238,22 @@ public class Home implements Initializable {
 	    cryptoCurrenciesLayout.setPrefWidth(1000);
 	    cryptoCurrenciesLayout.setContent(cryptoCurrenciesGrid);
 	    return cryptoCurrenciesLayout;
+	}
+	
+	
+	@FXML
+	void handleAddWallet(ActionEvent event) {
+	    try {
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXML/AddWalletPopup.fxml"));
+	        Parent root = loader.load();
+	        Stage stage = new Stage();
+	        stage.initModality(Modality.APPLICATION_MODAL);
+	        stage.setTitle("Add Wallet");
+	        stage.setScene(new Scene(root));
+	        stage.show();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
     
 	private static String formatDouble(double number) {

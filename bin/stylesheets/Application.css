@@ -8,6 +8,10 @@
 	-fx-font-weight: bold;
 }
 
+.title {
+	-fx-font-size: 20px;
+}
+
 .background-white {
 	-fx-background-color: white;
 }
@@ -23,6 +27,34 @@
 
 .text-white {
 	-fx-text-fill: white
+}
+
+.btn {
+	-fx-background-color: white;
+	-fx-background-radius: 15px;
+	-fx-border-color: #d16ba5;
+	-fx-text-fill: #d16ba5;
+	-fx-border-radius: 15px;
+}
+
+.btn:hover {
+	-fx-cursor: hand;
+	-fx-background-color: #d16ba5;
+	-fx-text-fill: white;
+}
+
+.btn-primary {
+	-fx-background-color: #d16ba5;
+	-fx-background-radius: 15px;
+	-fx-border-color: #d16ba5;
+	-fx-text-fill: white;
+	-fx-border-radius: 15px;
+}
+
+.btn-primary:hover {
+	-fx-cursor: hand;
+	-fx-background-color: #a84f8d;
+	-fx-border-color: #a84f8d;
 }
 
 /* ScrollBar styling */

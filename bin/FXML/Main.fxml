@@ -31,25 +31,26 @@
                               <String fx:value="bold" />
                            </styleClass>
                         </Label>
-                        <Button layoutX="22.0" layoutY="96.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="232.0" text="Home">
+                        <Button fx:id="HomeNavBtn" layoutX="22.0" layoutY="96.0" mnemonicParsing="false" onAction="#ShowHome" prefHeight="31.0" prefWidth="232.0" text="Home">
+                           <styleClass>
+                              <String fx:value="nav-menu-button" />
+                              <String fx:value="bold" />
+                              <String fx:value="nav-menu-button-focused" />
+                           </styleClass>
+                        </Button>
+                        <Button fx:id="MyWalletsNavBtn" layoutX="21.0" layoutY="168.0" mnemonicParsing="false" onAction="#ShowMyWallets" prefHeight="31.0" prefWidth="232.0" text="My Wallets">
                            <styleClass>
                               <String fx:value="nav-menu-button" />
                               <String fx:value="bold" />
                            </styleClass>
                         </Button>
-                        <Button layoutX="21.0" layoutY="168.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="232.0" text="My Wallets">
+                        <Button fx:id="PortfolioNavBtn" layoutX="23.0" layoutY="243.0" mnemonicParsing="false" onAction="#ShowPortfolio" prefHeight="31.0" prefWidth="232.0" text="Portfolio">
                            <styleClass>
                               <String fx:value="nav-menu-button" />
                               <String fx:value="bold" />
                            </styleClass>
                         </Button>
-                        <Button layoutX="23.0" layoutY="243.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="232.0" text="Portfolio">
-                           <styleClass>
-                              <String fx:value="nav-menu-button" />
-                              <String fx:value="bold" />
-                           </styleClass>
-                        </Button>
-                        <Button layoutX="22.0" layoutY="315.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="232.0" text="Transactions">
+                        <Button fx:id="TransactionsNavBtn" layoutX="22.0" layoutY="315.0" mnemonicParsing="false" onAction="#ShowTransactions" prefHeight="31.0" prefWidth="232.0" text="Transactions">
                            <styleClass>
                               <String fx:value="nav-menu-button" />
                               <String fx:value="bold" />
@@ -62,32 +63,19 @@
             </AnchorPane>
          </left>
          <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="Welcome Back!">
-                     <padding>
-                        <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                     <font>
-                        <Font size="23.0" />
-                     </font>
-                  </Label>
-                  <Label prefHeight="27.0" prefWidth="147.0" text="Top 5 NFTs">
-                     <padding>
-                        <Insets bottom="10.0" left="20.0" right="20.0" />
-                     </padding>
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <ScrollPane prefHeight="230.0" prefWidth="1027.0">
-                     <content>
-                        <HBox fx:id="NFTCardsLayout" prefWidth="1024.0" />
-                     </content>
-                  </ScrollPane>
-                  <HBox prefHeight="30.0" prefWidth="1027.0">
+                  <VBox fx:id="Home" prefHeight="739.0" prefWidth="1027.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label prefHeight="40.0" prefWidth="698.0" text="Cryptocurrencies">
+                        <Label styleClass="title" text="Welcome Back!">
+                           <padding>
+                              <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                           <font>
+                              <Font size="23.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="147.0" text="Top 5 NFTs">
                            <padding>
                               <Insets bottom="10.0" left="20.0" right="20.0" />
                            </padding>
@@ -95,12 +83,46 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <TextField id="search-bar" fx:id="searchInput" onKeyReleased="#onSearch" prefHeight="35.0" prefWidth="320.0" promptText="Search" />
+                        <ScrollPane prefHeight="230.0" prefWidth="1027.0">
+                           <content>
+                              <HBox fx:id="NFTCardsLayout" prefWidth="1024.0" />
+                           </content>
+                        </ScrollPane>
+                        <HBox prefHeight="30.0" prefWidth="1027.0">
+                           <children>
+                              <Label prefHeight="40.0" prefWidth="698.0" text="Cryptocurrencies">
+                                 <padding>
+                                    <Insets bottom="10.0" left="20.0" right="20.0" />
+                                 </padding>
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <TextField id="search-bar" fx:id="searchInput" onKeyReleased="#onSearch" prefHeight="35.0" prefWidth="320.0" promptText="Search" />
+                           </children>
+                        </HBox>
+                        <Pagination fx:id="pagination" prefHeight="355.0" prefWidth="1027.0" />
                      </children>
-                  </HBox>
-                  <Pagination fx:id="pagination" prefHeight="360.0" prefWidth="1027.0" />
+                  </VBox>
+                  <VBox fx:id="MyWallets" prefHeight="739.0" prefWidth="1027.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label styleClass="title" text="My Wallets">
+                           <padding>
+                              <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                           <font>
+                              <Font size="23.0" />
+                           </font>
+                        </Label>
+                        <AnchorPane prefHeight="62.0" prefWidth="1027.0">
+                           <children>
+                              <Button layoutX="14.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleAddWallet" prefHeight="33.0" prefWidth="187.0" styleClass="btn" text="Add New Wallet" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
+            </AnchorPane>
          </center>
       </BorderPane>
    </children>

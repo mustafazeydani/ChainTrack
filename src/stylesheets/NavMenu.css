@@ -20,7 +20,7 @@
 	-fx-border-radius: 10px;
 }
 
-.nav-menu-button:hover {
+.nav-menu-button:hover, .nav-menu-button-focused {
 	-fx-text-fill: #d16ba5;
 	-fx-background-color: white;
 	-fx-border-color: transparent;
