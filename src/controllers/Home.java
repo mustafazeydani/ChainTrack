@@ -176,9 +176,7 @@ public class Home implements Initializable {
 	            e.printStackTrace();
 	        }
 	    }
-	    cryptoCurrenciesLayout.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-	    cryptoCurrenciesLayout.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-	    
+	    cryptoCurrenciesLayout.setPrefWidth(1000);
 	    cryptoCurrenciesLayout.setContent(cryptoCurrenciesGrid);
 	    return cryptoCurrenciesLayout;
 	}
