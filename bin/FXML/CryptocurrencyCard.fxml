@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox prefHeight="215.0" prefWidth="518.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CryptocurrencyCardController">
+   <children>
+      <ImageView fx:id="image" fitHeight="215.0" fitWidth="312.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../OneDrive/Desktop/f3564ef33373939b024fb791f21ec37b.png" />
+         </image>
+      </ImageView>
+      <VBox prefHeight="230.0" prefWidth="279.0">
+         <children>
+            <AnchorPane prefHeight="230.0" prefWidth="279.0">
+               <children>
+                  <Label layoutX="16.0" layoutY="40.0" prefWidth="196.0" text="Price">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="price" layoutX="16.0" layoutY="69.0" prefHeight="26.0" prefWidth="176.0" text="100,000 USD">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="16.0" layoutY="95.0" prefHeight="36.0" prefWidth="176.0" text="Market Cap">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="marketCap" layoutX="16.0" layoutY="128.0" prefHeight="26.0" prefWidth="176.0" text="100,000 USD">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="158.0" prefHeight="28.0" prefWidth="135.0" text="All-Time High">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="allTimeHigh" layoutX="14.0" layoutY="187.0" prefHeight="26.0" prefWidth="176.0" text="100,000 USD">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="name" layoutX="16.0" layoutY="2.0" prefHeight="36.0" prefWidth="196.0" text="Bitcoin">
+                     <font>
+                        <Font name="System Bold" size="22.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</HBox>

@@ -16,29 +16,36 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
 
 public class Home implements Initializable {
 
     @FXML
     private HBox NFTCardsLayout;
+    
+    @FXML
+    private GridPane cryptocurrenciesGrid;
+    
+    private int cryptocurrencyCount = 10;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+		fetchNFTs();
+		fetchCryptocurrencies();
+    }
+
+    private void fetchNFTs() {
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.coingecko.com/api/v3/nfts/list?order=h24_volume_usd_desc&per_page=3&page=1"))
+                .uri(URI.create("https://api.coingecko.com/api/v3/nfts/list?order=h24_volume_usd_desc&per_page=5&page=1"))
                 .header("x-cg-demo-api-key", "CG-z8sb92fYPDJyKVXTKxD91oWF")
                 .build();
 
         httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenApply(HttpResponse::body)
-                .thenApply(this::fetchNFTs)
+                .thenApply(response -> new JSONArray(response))
                 .thenAccept(this::handleNFTsResponse)
                 .join();
-    }
-
-    private JSONArray fetchNFTs(String responseBody) {
-        return new JSONArray(responseBody);
     }
 
     private void handleNFTsResponse(JSONArray nfts) {
@@ -66,9 +73,9 @@ public class Home implements Initializable {
             String link = externalLinks != null && externalLinks.length() > 0 ? externalLinks.getJSONObject(0).optString("link", "") : "";
             controller.setData(
             	nft.getString("name"), 
-            	formatInteger(nft.getJSONObject("volume_24h").getInt("usd")), 
-            	formatInteger(nft.getJSONObject("floor_price").getInt("usd")), 
-            	formatInteger(nft.getInt("number_of_unique_addresses")), 
+            	formatDouble(nft.getJSONObject("volume_24h").getDouble("usd")), 
+            	formatDouble(nft.getJSONObject("floor_price").getDouble("usd")), 
+            	formatDouble(nft.getInt("number_of_unique_addresses")), 
             	nft.getJSONObject("image").getString("small"),
             	link
             );
@@ -81,8 +88,52 @@ public class Home implements Initializable {
         }
     }
     
-    private static String formatInteger(int number) {
-        DecimalFormat formatter = new DecimalFormat("#,###");
-        return formatter.format(number);
-    }
+	private void fetchCryptocurrencies() {
+		HttpClient httpClient = HttpClient.newHttpClient();
+		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(
+				"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc"))
+				.header("x-cg-demo-api-key", "CG-z8sb92fYPDJyKVXTKxD91oWF").build();
+
+		httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body)
+				.thenApply(response -> new JSONArray(response)).thenAccept(this::handleCryptocurrenciesResponse).join();
+	}
+	
+	private void handleCryptocurrenciesResponse(JSONArray cryptocurrencies) {
+		int column = 0;
+	    int row = 1;
+	    for (int i = 0; i < cryptocurrencyCount; i++) {
+	        JSONObject cryptocurrency = cryptocurrencies.getJSONObject(i);
+	        try {
+	            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXML/CryptocurrencyCard.fxml"));
+	            HBox box = loader.load();
+	            CryptocurrencyCardController controller = loader.getController();
+	            controller.setData(
+	                    cryptocurrency.getString("image"),
+	                    cryptocurrency.getString("name"),
+	                    formatDouble(cryptocurrency.getDouble("current_price")),
+	                    formatDouble(cryptocurrency.getDouble("market_cap")),
+	                    formatDouble(cryptocurrency.getDouble("ath"))
+	            );
+	            if (column == 2) {
+	                column = 0;
+	                row++;
+	            }
+	            
+	            cryptocurrenciesGrid.add(box, column++, row);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
+	
+    
+	private static String formatDouble(double number) {
+	    DecimalFormat formatter;
+	    if (number < 1) {
+	        formatter = new DecimalFormat("#,###.##");
+	    } else {
+	        formatter = new DecimalFormat("#,###");
+	    }
+	    return formatter.format(number);
+	}
 }

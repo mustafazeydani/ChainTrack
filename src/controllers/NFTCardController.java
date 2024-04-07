@@ -37,8 +37,8 @@ public class NFTCardController {
 	
 	public void setData(String title, String volume, String floorPrice, String holders, String imageUrl, String externalLink) {
 		NFTCardTitle.setText(title);
-		NFTCardVolume.setText(volume.toString() + " USD");
-		NFTCardFloorPrice.setText(floorPrice.toString() + " USD");
+		NFTCardVolume.setText("$" + volume.toString());
+		NFTCardFloorPrice.setText("$" + floorPrice.toString());
 		NFTCardHolders.setText(holders.toString());
 		NFTCardImage.setImage(new Image(imageUrl));
 		if (externalLink != "") {
