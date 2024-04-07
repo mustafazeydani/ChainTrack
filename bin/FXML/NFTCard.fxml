@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -10,53 +11,41 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="NFTCardBox" prefHeight="215.0" prefWidth="518.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.NFTCardController">
+<HBox id="card-container" fx:id="NFTCardBox" prefWidth="366.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.NFTCardController">
    <children>
-      <ImageView fx:id="NFTCardImage" fitHeight="215.0" fitWidth="312.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="NFTCardImage" fitHeight="74.0" fitWidth="141.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../OneDrive/Desktop/f3564ef33373939b024fb791f21ec37b.png" />
          </image>
       </ImageView>
-      <VBox prefHeight="230.0" prefWidth="279.0">
+      <VBox prefHeight="169.0" prefWidth="272.0">
          <children>
-            <AnchorPane prefHeight="230.0" prefWidth="279.0">
+            <AnchorPane prefWidth="272.0">
                <children>
-                  <Label layoutX="16.0" layoutY="40.0" prefWidth="196.0" text="Volume (24H)">
+                  <Label layoutX="16.0" layoutY="23.0" prefWidth="196.0" styleClass="text-white" text="Volume (24H)">
                      <font>
-                        <Font name="System Bold" size="19.0" />
+                        <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="NFTCardVolume" layoutX="16.0" layoutY="69.0" prefHeight="26.0" prefWidth="176.0" text="100,000 USD">
+                  <Label fx:id="NFTCardVolume" layoutX="16.0" layoutY="46.0" prefHeight="26.0" prefWidth="176.0" styleClass="text-white" text="\$100,000" />
+                  <Label layoutX="16.0" layoutY="72.0" prefHeight="26.0" prefWidth="176.0" styleClass="text-white" text="Floor Price">
                      <font>
-                        <Font size="17.0" />
+                        <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="16.0" layoutY="95.0" prefHeight="36.0" prefWidth="176.0" text="Floor Price">
+                  <Label fx:id="NFTCardFloorPrice" layoutX="16.0" layoutY="97.0" prefHeight="26.0" prefWidth="176.0" styleClass="text-white" text="\$100,000" />
+                  <Label layoutX="14.0" layoutY="123.0" styleClass="text-white" text="Holders">
                      <font>
-                        <Font name="System Bold" size="19.0" />
+                        <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="NFTCardFloorPrice" layoutX="16.0" layoutY="128.0" prefHeight="26.0" prefWidth="176.0" text="100,000 USD">
+                  <Label fx:id="NFTCardHolders" layoutX="14.0" layoutY="145.0" prefHeight="26.0" prefWidth="176.0" styleClass="text-white" text="5000" />
+                  <Label fx:id="NFTCardTitle" layoutX="16.0" layoutY="-7.0" prefHeight="36.0" prefWidth="196.0" styleClass="text-white" text="CryptoPunks">
                      <font>
-                        <Font size="17.0" />
+                        <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="14.0" layoutY="158.0" text="Holders">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="NFTCardHolders" layoutX="14.0" layoutY="187.0" prefHeight="26.0" prefWidth="176.0" text="5000">
-                     <font>
-                        <Font size="17.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="NFTCardTitle" layoutX="16.0" layoutY="2.0" prefHeight="36.0" prefWidth="196.0" text="CryptoPunks">
-                     <font>
-                        <Font name="System Bold" size="22.0" />
-                     </font>
-                  </Label>
-                  <FontAwesomeIcon id="nft-card-external-link" fx:id="NFTCardExternalLink" glyphName="EXTERNAL_LINK" layoutX="242.0" layoutY="27.0" size="1.5em" />
+                  <FontAwesomeIcon id="nft-card-external-link" fx:id="NFTCardExternalLink" fill="WHITE" glyphName="EXTERNAL_LINK" layoutX="246.0" layoutY="19.0" size="1.5em" />
                </children>
             </AnchorPane>
          </children>
@@ -68,4 +57,8 @@
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
+   <stylesheets>
+      <URL value="@../stylesheets/Application.css" />
+      <URL value="@../stylesheets/Home.css" />
+   </stylesheets>
 </HBox>

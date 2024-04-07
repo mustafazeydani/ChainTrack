@@ -9,18 +9,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="215.0" prefWidth="518.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CryptocurrencyCardController">
+<HBox prefHeight="235.0" prefWidth="485.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CryptocurrencyCardController">
    <children>
       <ImageView fx:id="image" fitHeight="215.0" fitWidth="312.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../OneDrive/Desktop/f3564ef33373939b024fb791f21ec37b.png" />
          </image>
       </ImageView>
-      <VBox prefHeight="230.0" prefWidth="279.0">
+      <VBox prefHeight="205.0">
          <children>
-            <AnchorPane prefHeight="230.0" prefWidth="279.0">
+            <AnchorPane prefHeight="215.0">
                <children>
-                  <Label layoutX="16.0" layoutY="40.0" prefWidth="196.0" text="Price">
+                  <Label layoutX="16.0" layoutY="40.0" prefHeight="28.0" prefWidth="48.0" text="Price">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
@@ -30,7 +30,7 @@
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label layoutX="16.0" layoutY="95.0" prefHeight="36.0" prefWidth="176.0" text="Market Cap">
+                  <Label layoutX="16.0" layoutY="95.0" prefHeight="36.0" prefWidth="108.0" text="Market Cap">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
@@ -50,7 +50,7 @@
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="name" layoutX="16.0" layoutY="2.0" prefHeight="36.0" prefWidth="196.0" text="Bitcoin">
+                  <Label fx:id="name" layoutX="16.0" layoutY="2.0" prefHeight="36.0" prefWidth="135.0" text="Bitcoin">
                      <font>
                         <Font name="System Bold" size="22.0" />
                      </font>

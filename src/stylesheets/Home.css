@@ -5,7 +5,31 @@
 }
 
 /* NFT Card Styles */
+#card-container {
+	-fx-background-color: linear-gradient(to right bottom, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+	-fx-background-radius: 20px;
+	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 10, 0, 0, 0);
+}
+
 #nft-card-external-link:hover {
 	-fx-fill: #d16ba5;
 	-fx-cursor: hand;
+}
+
+/* Cryptocurrencies section */
+#search-icon:hover {
+	-fx-cursor: hand;
+	-fx-font-family: FontAwesome;
+	-fx-fill: #d16ba5;
+}
+
+#search-bar {
+	-fx-background-radius: 20px;
+	-fx-background-color: white;
+	-fx-border-color: #e6e6e6;
+	-fx-border-radius: 20px;
+}
+
+#search-bar:focused { /* Corrected */
+    -fx-border-color: #d16ba5;
 }

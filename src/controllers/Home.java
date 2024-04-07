@@ -16,7 +16,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
+import javafx.scene.control.Pagination;
 import javafx.scene.layout.GridPane;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 
 public class Home implements Initializable {
 
@@ -24,9 +28,16 @@ public class Home implements Initializable {
     private HBox NFTCardsLayout;
     
     @FXML
-    private GridPane cryptocurrenciesGrid;
+    private ScrollPane cryptoCurrenciesLayout;
     
-    private int cryptocurrencyCount = 10;
+    @FXML
+    private TextField searchInput;
+    
+    @FXML
+    private Pagination pagination;
+    
+    private int pageLimit = 10;
+    private JSONArray cryptocurrencies;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -82,6 +93,7 @@ public class Home implements Initializable {
             // Update UI on the JavaFX Application Thread
             Platform.runLater(() -> {
                 NFTCardsLayout.getChildren().add(box);
+                HBox.setMargin(box, new javafx.geometry.Insets(10, 10, 10, 10));
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,9 +111,50 @@ public class Home implements Initializable {
 	}
 	
 	private void handleCryptocurrenciesResponse(JSONArray cryptocurrencies) {
-		int column = 0;
+	    this.cryptocurrencies = cryptocurrencies;
+	    int pageCount = (int) Math.ceil(cryptocurrencies.length() / pageLimit);
+	    pagination.setPageCount(pageCount);
+	    pagination.setPageFactory(pageIndex -> {
+	        ScrollPane page = new ScrollPane();
+	        Platform.runLater(() -> {
+	            page.setContent(createPage(pageIndex, cryptocurrencies));
+	        });
+	        return page;
+	    });
+	}
+	
+    @FXML
+    void onSearch(KeyEvent event) {
+    	filterCryptocurrencies();
+    }
+    
+    private void filterCryptocurrencies() {
+        String query = searchInput.getText().toLowerCase();
+        JSONArray filteredCryptocurrencies = new JSONArray();
+        for (int i = 0; i < cryptocurrencies.length(); i++) {
+            JSONObject cryptocurrency = cryptocurrencies.getJSONObject(i);
+            if (cryptocurrency.getString("name").toLowerCase().startsWith(query)) {
+                filteredCryptocurrencies.put(cryptocurrency);
+            }
+        }
+        int pageCount = (int) Math.ceil((double) filteredCryptocurrencies.length() / pageLimit); // Correcting the calculation
+        pagination.setPageCount(pageCount);
+        pagination.setPageFactory(pageIndex -> {
+            ScrollPane page = new ScrollPane();
+            page.setContent(createPage(pageIndex, filteredCryptocurrencies));
+            return page;
+        });
+    }
+
+	private ScrollPane createPage(int pageIndex, JSONArray cryptocurrencies) {
+	    int startIndex = pageIndex * pageLimit;
+	    int endIndex = Math.min(startIndex + pageLimit, cryptocurrencies.length());
+
+	    ScrollPane cryptoCurrenciesLayout = new ScrollPane();
+	    GridPane cryptoCurrenciesGrid = new GridPane();
+	    int column = 0;
 	    int row = 1;
-	    for (int i = 0; i < cryptocurrencyCount; i++) {
+	    for (int i = startIndex; i < endIndex; i++) {
 	        JSONObject cryptocurrency = cryptocurrencies.getJSONObject(i);
 	        try {
 	            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXML/CryptocurrencyCard.fxml"));
@@ -118,14 +171,17 @@ public class Home implements Initializable {
 	                column = 0;
 	                row++;
 	            }
-	            
-	            cryptocurrenciesGrid.add(box, column++, row);
+	            cryptoCurrenciesGrid.add(box, column++, row);
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
 	    }
+	    cryptoCurrenciesLayout.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+	    cryptoCurrenciesLayout.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+	    
+	    cryptoCurrenciesLayout.setContent(cryptoCurrenciesGrid);
+	    return cryptoCurrenciesLayout;
 	}
-	
     
 	private static String formatDouble(double number) {
 	    DecimalFormat formatter;
