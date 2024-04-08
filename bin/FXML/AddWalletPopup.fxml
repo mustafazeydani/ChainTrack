@@ -8,8 +8,8 @@
 <AnchorPane prefHeight="163.0" prefWidth="560.0" styleClass="background-white" stylesheets="@../stylesheets/Application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddWalletPopupController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" styleClass="title" text="Enter your wallet address" />
-      <TextField fx:id="address" layoutX="14.0" layoutY="60.0" onKeyReleased="#onTextChanged" prefHeight="33.0" prefWidth="428.0" promptText="0x0000000000000000000000000000000000000000" />
-      <Button layoutX="393.0" layoutY="114.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="146.0" styleClass="btn-primary" text="Add" />
-      <Button layoutX="236.0" layoutY="114.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="146.0" styleClass="btn" text="Cancel" />
+      <TextField fx:id="address" focusTraversable="false" layoutX="14.0" layoutY="60.0" onKeyReleased="#onTextChanged" prefHeight="33.0" prefWidth="428.0" promptText="0x0000000000000000000000000000000000000000" />
+      <Button fx:id="add" disable="true" layoutX="393.0" layoutY="114.0" mnemonicParsing="false" onAction="#handleAddWallet" prefHeight="35.0" prefWidth="146.0" styleClass="btn-primary" text="Add" />
+      <Button fx:id="cancel" layoutX="236.0" layoutY="114.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="35.0" prefWidth="146.0" styleClass="btn" text="Cancel" />
    </children>
 </AnchorPane>
