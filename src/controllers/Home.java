@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import java.net.URI;
 
+import java.util.List;
+import java.util.Map;
 import javafx.event.ActionEvent;
 import java.net.URL;
 import java.net.http.HttpClient;
@@ -29,6 +31,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 
 public class Home implements Initializable {
 
@@ -47,9 +51,6 @@ public class Home implements Initializable {
     
     @FXML
     private VBox Home;
-
-    @FXML
-    private VBox MyWallets;
     
     @FXML
     void ShowHome(ActionEvent event) {
@@ -61,15 +62,7 @@ public class Home implements Initializable {
     	}
     }
 
-    @FXML
-    void ShowMyWallets(ActionEvent event) {
-		if (!MyWallets.isVisible()) {
-			MyWallets.setVisible(true);
-			MyWalletsNavBtn.getStyleClass().add("nav-menu-button-focused");
-			Home.setVisible(false);
-			HomeNavBtn.getStyleClass().remove("nav-menu-button-focused");
-		}
-    }
+
 
     @FXML
     void ShowPortfolio(ActionEvent event) {
@@ -241,11 +234,55 @@ public class Home implements Initializable {
 	}
 	
 	
+	/* My Wallets */
+    @FXML
+    private VBox MyWallets;
+    
+    @FXML
+    private Label noWalletsLabel;
+    
+    @FXML
+    private ComboBox<String> walletsComboBox;
+	
+    @FXML
+    void ShowMyWallets(ActionEvent event) {
+    	fetchWallets();
+		if (!MyWallets.isVisible()) {
+			MyWallets.setVisible(true);
+			MyWalletsNavBtn.getStyleClass().add("nav-menu-button-focused");
+			Home.setVisible(false);
+			HomeNavBtn.getStyleClass().remove("nav-menu-button-focused");
+		}
+    }
+    
+    void fetchWallets() {
+        String query = "SELECT * FROM wallets";
+        List<Map<String, Object>> resultList = DatabaseManager.getQuery(query);
+        try {
+            if (resultList.size() == 0) {
+                noWalletsLabel.setVisible(true);
+                walletsComboBox.setDisable(true);
+                return;
+            }
+            noWalletsLabel.setVisible(false);
+            walletsComboBox.setDisable(false);
+            walletsComboBox.getItems().clear();
+			for (Map<String, Object> row : resultList) {
+				walletsComboBox.getItems().add((String) row.get("address"));
+			}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
 	@FXML
 	void handleAddWallet(ActionEvent event) {
 	    try {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXML/AddWalletPopup.fxml"));
 	        Parent root = loader.load();
+	        AddWalletPopupController controller = loader.getController();
+	        controller.setWalletsComboBox(walletsComboBox);
+	        controller.setNoWalletsLabel(noWalletsLabel);
 	        Stage stage = new Stage();
 	        stage.initModality(Modality.APPLICATION_MODAL);
 	        stage.setTitle("Add Wallet");

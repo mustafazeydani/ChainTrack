@@ -1,16 +1,14 @@
 package controllers;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -24,55 +22,69 @@ public class AddWalletPopupController {
 
     @FXML
     private Button cancel;
-
-    @FXML
-    void handleAddWallet(ActionEvent event) {
-        	try {
-				if (validateAddress()) {
-					// Add wallet to database
-					
-					// Close popup
-					Stage stage = (Stage) add.getScene().getWindow();
-					stage.close();
-				} else {
-					Alert alert = new Alert(AlertType.ERROR);
-					alert.setTitle("Invalid Address");
-					alert.setHeaderText("The address you entered is invalid.");
-					alert.setContentText("Please enter a valid address.");
-					alert.showAndWait();
-				}
-        	}
-			catch (URISyntaxException | IOException | InterruptedException e) {
-				e.printStackTrace();
-			}
-    }
     
-	Boolean validateAddress() throws URISyntaxException, IOException, InterruptedException {
-    	String addressText = address.getText();
-        String apiUrl = "https://rest.cryptoapis.io/blockchain-tools/binance-smart-chain/testnet/addresses/validate";
-        String apiKey = "0c7acd229ecec95e344455a097d1f40015981c66";
-        String requestBody = "{\"data\": {\"item\": {\"address\": \"" + addressText + "\"}}}";
-
-        // Create an HttpClient
-        HttpClient client = HttpClient.newHttpClient();
-
-        // Create an HttpRequest
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(apiUrl))
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .header("Content-Type", "application/json")
-                .header("X-API-Key", apiKey)
-                .build();
-
-        // Send the request and retrieve the response
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-		if (response.statusCode() == 200) {
-			return true;
-		} else {
-			return false;
-		}
+    @FXML
+    private Label noWalletsLabel;
+    
+    @FXML
+    private ComboBox<String> walletsComboBox;
+    
+	void setWalletsComboBox(ComboBox<String> walletsComboBox) {
+		this.walletsComboBox = walletsComboBox;
 	}
+	
+	void setNoWalletsLabel(Label noWalletsLabel) {
+		this.noWalletsLabel = noWalletsLabel;
+	}
+
+	@FXML
+	void handleAddWallet(ActionEvent event) {
+	    try {
+	        String addressText = address.getText();
+	        String uuid = java.util.UUID.randomUUID().toString();
+	        String query = "INSERT INTO wallets (id, address) VALUES (?, ?)";
+	        
+	        // Use PreparedStatement to prevent SQL injection
+	        PreparedStatement preparedStatement = DatabaseManager.getConnection().prepareStatement(query);
+	        preparedStatement.setString(1, uuid);
+	        preparedStatement.setString(2, addressText);
+	        
+	        // Execute the update query
+	        int rowsAffected = preparedStatement.executeUpdate();
+	        
+	        if (rowsAffected > 0) {
+	            // Insertion successful
+	            if (walletsComboBox.isDisabled()) {
+	                walletsComboBox.setDisable(false);
+	            }
+	            if (noWalletsLabel.isVisible()) {
+	                noWalletsLabel.setVisible(false);
+	            }
+	            walletsComboBox.getItems().add(addressText);
+	        } else {
+	            Alert alert = new Alert(AlertType.ERROR);
+	            alert.setTitle("Error");
+	            alert.setHeaderText("Failed to add wallet");
+	            alert.setContentText("An error occurred while adding the wallet. Please try again.");
+	            alert.showAndWait();
+	        }
+	        
+	        // Close the prepared statement
+	        preparedStatement.close();
+	        
+	    } catch (SQLException e) {
+	        Alert alert = new Alert(AlertType.ERROR);
+	        alert.setTitle("Error");
+	        alert.setHeaderText("Failed to add wallet");
+	        alert.setContentText(e.getMessage());
+	        alert.showAndWait();
+	    } finally {
+	        // Close the stage
+	        Stage stage = (Stage) add.getScene().getWindow();
+	        stage.close();
+	    }
+	}
+    
 
     @FXML
     void handleCancel(ActionEvent event) {

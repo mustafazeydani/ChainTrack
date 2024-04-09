@@ -112,3 +112,32 @@
     -fx-background-color: #d16ba5;
     -fx-text-fill: white;
 }
+
+/* ComboBox styling */
+.combo-box {
+	-fx-border-width: 0.5px;
+	-fx-border-color: #d16ba5;
+	-fx-background-color: white;
+	-fx-padding: 0px;
+}
+.combo-box:hover {
+	-fx-cursor: hand;
+	-fx-text-fill: white;
+}
+
+.combo-box-base:hover {
+	-fx-cursor: hand;
+	-fx-border-color: #d16ba5;
+	-fx-background-color: #d16ba5; 
+}
+
+.combo-box .combo-box-popup .list-view, .combo-box .combo-box-popup .list-cell {
+	-fx-padding: 5px;
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+.combo-box .combo-box-popup .list-cell:hover {
+	-fx-cursor: hand;
+    -fx-text-fill: white;
+    -fx-background-color: #d16ba5 ;
+}

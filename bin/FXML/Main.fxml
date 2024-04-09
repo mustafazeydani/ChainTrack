@@ -5,6 +5,7 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.ScrollPane?>
@@ -75,7 +76,7 @@
                               <Font size="23.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="27.0" prefWidth="147.0" text="Top 5 NFTs">
+                        <Label prefHeight="38.0" prefWidth="158.0" text="Top 5 NFTs">
                            <padding>
                               <Insets bottom="10.0" left="20.0" right="20.0" />
                            </padding>
@@ -104,7 +105,7 @@
                         <Pagination fx:id="pagination" prefHeight="355.0" prefWidth="1027.0" />
                      </children>
                   </VBox>
-                  <VBox fx:id="MyWallets" prefHeight="739.0" prefWidth="1027.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox fx:id="MyWallets" prefHeight="739.0" prefWidth="1027.0" stylesheets="@../stylesheets/MyWallets.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <Label styleClass="title" text="My Wallets">
                            <padding>
@@ -117,6 +118,12 @@
                         <AnchorPane prefHeight="62.0" prefWidth="1027.0">
                            <children>
                               <Button layoutX="14.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleAddWallet" prefHeight="33.0" prefWidth="187.0" styleClass="btn" text="Add New Wallet" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="621.0" prefWidth="1027.0">
+                           <children>
+                              <Label id="no-wallets-added-label" fx:id="noWalletsLabel" alignment="CENTER" layoutX="360.0" layoutY="299.0" prefHeight="23.0" prefWidth="307.0" text="No wallets added" AnchorPane.bottomAnchor="298.0" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="360.0" AnchorPane.topAnchor="299.0" />
+                              <ComboBox fx:id="walletsComboBox" layoutX="14.0" layoutY="14.0" prefHeight="33.0" prefWidth="368.0" promptText="Select a wallet" />
                            </children>
                         </AnchorPane>
                      </children>
