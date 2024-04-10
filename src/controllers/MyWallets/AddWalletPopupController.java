@@ -1,5 +1,5 @@
-package controllers;
-
+package controllers.MyWallets;
+import controllers.DatabaseManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javafx.fxml.FXML;

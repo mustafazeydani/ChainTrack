@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="739.0" prefWidth="1027.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Home.HomeController">
+   <children>
+      <Label styleClass="title" text="Welcome Back!">
+         <padding>
+            <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label prefHeight="38.0" prefWidth="158.0" text="Top 5 NFTs">
+         <padding>
+            <Insets bottom="10.0" left="20.0" right="20.0" />
+         </padding>
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <ScrollPane prefHeight="230.0" prefWidth="1027.0">
+         <content>
+            <HBox fx:id="NFTCardsLayout" prefWidth="1024.0" />
+         </content>
+      </ScrollPane>
+      <HBox prefHeight="30.0" prefWidth="1027.0">
+         <children>
+            <Label prefHeight="40.0" prefWidth="698.0" text="Cryptocurrencies">
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" />
+               </padding>
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <TextField id="search-bar" fx:id="searchInput" onKeyReleased="#onSearch" prefHeight="35.0" prefWidth="320.0" promptText="Search" />
+         </children>
+      </HBox>
+      <Pagination fx:id="pagination" prefHeight="355.0" prefWidth="1027.0" />
+   </children>
+   <stylesheets>
+      <URL value="@../../stylesheets/Home.css" />
+   </stylesheets>
+</VBox>

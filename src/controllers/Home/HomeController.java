@@ -1,12 +1,6 @@
-package controllers;
-
-import java.io.IOException;
+package controllers.Home;
 
 import java.net.URI;
-
-import java.util.List;
-import java.util.Map;
-import javafx.event.ActionEvent;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -15,67 +9,20 @@ import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Pagination;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 
-public class Home implements Initializable {
-
-	/* Nav Menu */
-	@FXML
-    private Button HomeNavBtn;
-
-    @FXML
-    private Button MyWalletsNavBtn;
-
-    @FXML
-    private Button PortfolioNavBtn;
-
-    @FXML
-    private Button TransactionsNavBtn;
+public class HomeController implements Initializable {
     
-    @FXML
-    private VBox Home;
-    
-    @FXML
-    void ShowHome(ActionEvent event) {
-    	if(!Home.isVisible()) {
-    		Home.setVisible(true);
-    		HomeNavBtn.getStyleClass().add("nav-menu-button-focused");
-    		MyWallets.setVisible(false);
-    		MyWalletsNavBtn.getStyleClass().remove("nav-menu-button-focused");
-    	}
-    }
-
-
-
-    @FXML
-    void ShowPortfolio(ActionEvent event) {
-
-    }
-
-    @FXML
-    void ShowTransactions(ActionEvent event) {
-
-    }
-    
-	
-	/* Home */
     @FXML
     private HBox NFTCardsLayout;
     
@@ -129,7 +76,7 @@ public class Home implements Initializable {
     private void handleNFTResponse(String responseBody) {
         JSONObject nft = new JSONObject(responseBody);
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXML/NFTCard.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../FXML/Home/NFTCard.fxml"));
             HBox box = loader.load();
             NFTCardController controller = loader.getController();
             JSONArray externalLinks = nft.getJSONArray("explorers");
@@ -209,7 +156,7 @@ public class Home implements Initializable {
 	    for (int i = startIndex; i < endIndex; i++) {
 	        JSONObject cryptocurrency = cryptocurrencies.getJSONObject(i);
 	        try {
-	            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXML/CryptocurrencyCard.fxml"));
+	            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../FXML/Home/CryptocurrencyCard.fxml"));
 	            HBox box = loader.load();
 	            CryptocurrencyCardController controller = loader.getController();
 	            controller.setData(
@@ -231,66 +178,6 @@ public class Home implements Initializable {
 	    cryptoCurrenciesLayout.setPrefWidth(1000);
 	    cryptoCurrenciesLayout.setContent(cryptoCurrenciesGrid);
 	    return cryptoCurrenciesLayout;
-	}
-	
-	
-	/* My Wallets */
-    @FXML
-    private VBox MyWallets;
-    
-    @FXML
-    private Label noWalletsLabel;
-    
-    @FXML
-    private ComboBox<String> walletsComboBox;
-	
-    @FXML
-    void ShowMyWallets(ActionEvent event) {
-    	fetchWallets();
-		if (!MyWallets.isVisible()) {
-			MyWallets.setVisible(true);
-			MyWalletsNavBtn.getStyleClass().add("nav-menu-button-focused");
-			Home.setVisible(false);
-			HomeNavBtn.getStyleClass().remove("nav-menu-button-focused");
-		}
-    }
-    
-    void fetchWallets() {
-        String query = "SELECT * FROM wallets";
-        List<Map<String, Object>> resultList = DatabaseManager.getQuery(query);
-        try {
-            if (resultList.size() == 0) {
-                noWalletsLabel.setVisible(true);
-                walletsComboBox.setDisable(true);
-                return;
-            }
-            noWalletsLabel.setVisible(false);
-            walletsComboBox.setDisable(false);
-            walletsComboBox.getItems().clear();
-			for (Map<String, Object> row : resultList) {
-				walletsComboBox.getItems().add((String) row.get("address"));
-			}
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-	@FXML
-	void handleAddWallet(ActionEvent event) {
-	    try {
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXML/AddWalletPopup.fxml"));
-	        Parent root = loader.load();
-	        AddWalletPopupController controller = loader.getController();
-	        controller.setWalletsComboBox(walletsComboBox);
-	        controller.setNoWalletsLabel(noWalletsLabel);
-	        Stage stage = new Stage();
-	        stage.initModality(Modality.APPLICATION_MODAL);
-	        stage.setTitle("Add Wallet");
-	        stage.setScene(new Scene(root));
-	        stage.show();
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
 	}
     
 	private static String formatDouble(double number) {

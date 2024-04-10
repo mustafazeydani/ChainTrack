@@ -3,21 +3,13 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import java.lang.String?>
 <?import java.net.URL?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Pagination?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="739.0" prefWidth="1300.0" styleClass="background-white" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Home">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="739.0" prefWidth="1300.0" styleClass="background-white" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <left>
@@ -32,26 +24,26 @@
                               <String fx:value="bold" />
                            </styleClass>
                         </Label>
-                        <Button fx:id="HomeNavBtn" layoutX="22.0" layoutY="96.0" mnemonicParsing="false" onAction="#ShowHome" prefHeight="31.0" prefWidth="232.0" text="Home">
+                        <Button fx:id="HomeNavBtn" layoutX="22.0" layoutY="96.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="232.0" text="Home">
                            <styleClass>
                               <String fx:value="nav-menu-button" />
                               <String fx:value="bold" />
                               <String fx:value="nav-menu-button-focused" />
                            </styleClass>
                         </Button>
-                        <Button fx:id="MyWalletsNavBtn" layoutX="21.0" layoutY="168.0" mnemonicParsing="false" onAction="#ShowMyWallets" prefHeight="31.0" prefWidth="232.0" text="My Wallets">
+                        <Button fx:id="MyWalletsNavBtn" layoutX="21.0" layoutY="172.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="232.0" text="My Wallets">
                            <styleClass>
                               <String fx:value="nav-menu-button" />
                               <String fx:value="bold" />
                            </styleClass>
                         </Button>
-                        <Button fx:id="PortfolioNavBtn" layoutX="23.0" layoutY="243.0" mnemonicParsing="false" onAction="#ShowPortfolio" prefHeight="31.0" prefWidth="232.0" text="Portfolio">
+                        <Button fx:id="PortfolioNavBtn" layoutX="23.0" layoutY="243.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="232.0" text="Portfolio">
                            <styleClass>
                               <String fx:value="nav-menu-button" />
                               <String fx:value="bold" />
                            </styleClass>
                         </Button>
-                        <Button fx:id="TransactionsNavBtn" layoutX="22.0" layoutY="315.0" mnemonicParsing="false" onAction="#ShowTransactions" prefHeight="31.0" prefWidth="232.0" text="Transactions">
+                        <Button fx:id="TransactionsNavBtn" layoutX="22.0" layoutY="315.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="232.0" text="Transactions">
                            <styleClass>
                               <String fx:value="nav-menu-button" />
                               <String fx:value="bold" />
@@ -64,78 +56,12 @@
             </AnchorPane>
          </left>
          <center>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <children>
-                  <VBox fx:id="Home" prefHeight="739.0" prefWidth="1027.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Label styleClass="title" text="Welcome Back!">
-                           <padding>
-                              <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
-                           </padding>
-                           <font>
-                              <Font size="23.0" />
-                           </font>
-                        </Label>
-                        <Label prefHeight="38.0" prefWidth="158.0" text="Top 5 NFTs">
-                           <padding>
-                              <Insets bottom="10.0" left="20.0" right="20.0" />
-                           </padding>
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <ScrollPane prefHeight="230.0" prefWidth="1027.0">
-                           <content>
-                              <HBox fx:id="NFTCardsLayout" prefWidth="1024.0" />
-                           </content>
-                        </ScrollPane>
-                        <HBox prefHeight="30.0" prefWidth="1027.0">
-                           <children>
-                              <Label prefHeight="40.0" prefWidth="698.0" text="Cryptocurrencies">
-                                 <padding>
-                                    <Insets bottom="10.0" left="20.0" right="20.0" />
-                                 </padding>
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                              <TextField id="search-bar" fx:id="searchInput" onKeyReleased="#onSearch" prefHeight="35.0" prefWidth="320.0" promptText="Search" />
-                           </children>
-                        </HBox>
-                        <Pagination fx:id="pagination" prefHeight="355.0" prefWidth="1027.0" />
-                     </children>
-                  </VBox>
-                  <VBox fx:id="MyWallets" prefHeight="739.0" prefWidth="1027.0" stylesheets="@../stylesheets/MyWallets.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Label styleClass="title" text="My Wallets">
-                           <padding>
-                              <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
-                           </padding>
-                           <font>
-                              <Font size="23.0" />
-                           </font>
-                        </Label>
-                        <AnchorPane prefHeight="62.0" prefWidth="1027.0">
-                           <children>
-                              <Button layoutX="14.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleAddWallet" prefHeight="33.0" prefWidth="187.0" styleClass="btn" text="Add New Wallet" />
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane prefHeight="621.0" prefWidth="1027.0">
-                           <children>
-                              <Label id="no-wallets-added-label" fx:id="noWalletsLabel" alignment="CENTER" layoutX="360.0" layoutY="299.0" prefHeight="23.0" prefWidth="307.0" text="No wallets added" AnchorPane.bottomAnchor="298.0" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="360.0" AnchorPane.topAnchor="299.0" />
-                              <ComboBox fx:id="walletsComboBox" layoutX="14.0" layoutY="14.0" prefHeight="33.0" prefWidth="368.0" promptText="Select a wallet" />
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </VBox>
-               </children>
-            </AnchorPane>
+            <AnchorPane fx:id="MainAnchorPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </children>
    <stylesheets>
       <URL value="@../stylesheets/Application.css" />
       <URL value="@../stylesheets/NavMenu.css" />
-      <URL value="@../stylesheets/Home.css" />
    </stylesheets>
 </StackPane>
