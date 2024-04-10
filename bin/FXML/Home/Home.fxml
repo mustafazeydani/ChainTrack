@@ -12,14 +12,6 @@
 
 <VBox prefHeight="739.0" prefWidth="1027.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Home.HomeController">
    <children>
-      <Label styleClass="title" text="Welcome Back!">
-         <padding>
-            <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
-         <font>
-            <Font size="23.0" />
-         </font>
-      </Label>
       <Label prefHeight="38.0" prefWidth="158.0" text="Top 5 NFTs">
          <padding>
             <Insets bottom="10.0" left="20.0" right="20.0" />
@@ -28,7 +20,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <ScrollPane prefHeight="230.0" prefWidth="1027.0">
+      <ScrollPane prefHeight="300.0" prefWidth="1027.0">
          <content>
             <HBox fx:id="NFTCardsLayout" prefWidth="1024.0" />
          </content>
@@ -46,7 +38,7 @@
             <TextField id="search-bar" fx:id="searchInput" onKeyReleased="#onSearch" prefHeight="35.0" prefWidth="320.0" promptText="Search" />
          </children>
       </HBox>
-      <Pagination fx:id="pagination" prefHeight="355.0" prefWidth="1027.0" />
+      <Pagination fx:id="pagination" prefHeight="429.0" prefWidth="1027.0" />
    </children>
    <stylesheets>
       <URL value="@../../stylesheets/Home.css" />

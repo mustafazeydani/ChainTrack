@@ -12,6 +12,8 @@ import java.io.IOException;
 import javafx.scene.Node;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javafx.scene.control.Label;
+import javafx.scene.control.ComboBox;
 
 public class MainController implements Initializable {
 	/* Nav Menu */
@@ -26,9 +28,18 @@ public class MainController implements Initializable {
 
     @FXML
     private Button TransactionsNavBtn;
+    
+    @FXML
+    private AnchorPane headerAnchorPane;
 
     @FXML
-    private AnchorPane MainAnchorPane;
+    private VBox MainVBox;
+
+    @FXML
+    private Label mainTitle;
+
+    @FXML
+    private ComboBox<String> networksComboBox;
     
     public void initialize(URL arg0, ResourceBundle arg1) {
         loadForm("Home");
@@ -52,10 +63,11 @@ public class MainController implements Initializable {
         	switchNavigationButtonFocus(TransactionsNavBtn);
             loadForm("Transactions");
         });
+        
+        networksComboBox.getItems().addAll("Ethereum", "Binance Smart Chain", "Polygon");
+        networksComboBox.setValue("Ethereum");
     }
-
-    private Node currentForm;
-
+    
     private void switchNavigationButtonFocus(Button selectedButton) {
         ArrayList<Button> navButtons = new ArrayList<>(Arrays.asList(HomeNavBtn, MyWalletsNavBtn, PortfolioNavBtn, TransactionsNavBtn));
         for (Button button : navButtons) {
@@ -66,6 +78,8 @@ public class MainController implements Initializable {
             }
         }
     }
+
+    private Node currentForm;
     
     private void loadForm(String name) {
         try {
@@ -76,11 +90,17 @@ public class MainController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXML/" + name + "/" + name +".fxml"));
             VBox form = loader.load();
             form.setId(name + "Form");
-            MainAnchorPane.getChildren().clear();
-            MainAnchorPane.getChildren().add(form);
+            mainTitle.setText(name);
+			if (name.equals("Home")) {
+				networksComboBox.setVisible(false);
+			} else {
+				networksComboBox.setVisible(true);
+			}
+            MainVBox.getChildren().remove(1, MainVBox.getChildren().size());
+            MainVBox.getChildren().add(form);
             currentForm = form;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
- }
+}

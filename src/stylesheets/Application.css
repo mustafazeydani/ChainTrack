@@ -8,6 +8,10 @@
 	-fx-font-weight: bold;
 }
 
+.main-title {
+	-fx-font-size: 30px;
+}
+
 .title {
 	-fx-font-size: 20px;
 }
