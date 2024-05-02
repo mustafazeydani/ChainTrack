@@ -2,7 +2,6 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -14,11 +13,6 @@
       <AnchorPane prefHeight="62.0" prefWidth="1027.0">
          <children>
             <Button layoutX="14.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleAddWallet" prefHeight="33.0" prefWidth="187.0" styleClass="btn" text="Add New Wallet" />
-         </children>
-      </AnchorPane>
-      <AnchorPane prefHeight="64.0" prefWidth="1027.0">
-         <children>
-            <ComboBox fx:id="walletsComboBox" layoutX="14.0" layoutY="14.0" prefHeight="33.0" prefWidth="368.0" promptText="Select a wallet" />
          </children>
       </AnchorPane>
       <ScrollPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">

@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.MyWallets.MyWalletsController;
+import controllers.Portfolio.PortfolioController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.HashMap;
@@ -60,6 +61,7 @@ public class MainController implements Initializable {
     	
     	// Add the controllers to the controllerMap
     	controllerMap.put("MyWallets", MyWalletsController.class);
+    	controllerMap.put("Portfolio", PortfolioController.class);
     	
     	// Load the Home form
         loadForm("Home");
@@ -126,7 +128,9 @@ public class MainController implements Initializable {
             }
 
             // Load the form
+            FXMLLoader walletsComboBoxLoader = new FXMLLoader(getClass().getResource("../FXML/WalletsComboBox.fxml"));
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXML/" + name + "/" + name +".fxml"));
+            AnchorPane walletsComboBoxForm = walletsComboBoxLoader.load();
             VBox form = loader.load();
             form.setId(name + "Form");
             
@@ -139,6 +143,12 @@ public class MainController implements Initializable {
 					method.invoke(loader.getController(), networksComboBox);
 					
 					networksComboBox.setVisible(true);
+					
+					// Get the walletsComboBox from the walletsComboBoxLoader and set it in the form
+					Method getWalletsComboBox = walletsComboBoxLoader.getController().getClass().getMethod("getWalletsComboBox");
+					ComboBox<String> walletsComboBox = (ComboBox<String>) getWalletsComboBox.invoke(walletsComboBoxLoader.getController());
+					Method setComboBoxMethod = controllerMap.get(name).getMethod("setWalletsComboBox", ComboBox.class);
+					setComboBoxMethod.invoke(loader.getController(), walletsComboBox);
 	            }
 				catch (Exception e) {
 					e.printStackTrace();
@@ -149,6 +159,10 @@ public class MainController implements Initializable {
             
 			// Keep the headerAnchorPane and add the form to the MainVBox
             MainVBox.getChildren().remove(1, MainVBox.getChildren().size());
+            
+            // Add the walletsComboBoxForm and the form to the MainVBox
+            if(!name.equals("Home"))
+            	MainVBox.getChildren().add(1, walletsComboBoxForm);
             MainVBox.getChildren().add(form);
             
             // Set the currentForm to the new form

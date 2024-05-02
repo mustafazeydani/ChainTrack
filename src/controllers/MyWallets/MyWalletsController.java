@@ -1,10 +1,6 @@
 package controllers.MyWallets;
-
-import controllers.DatabaseManager;
-import javafx.fxml.Initializable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import java.util.concurrent.CompletableFuture;
 import controllers.Network;
 
 import org.json.JSONArray;
@@ -13,13 +9,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URI;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ComboBox;
@@ -33,7 +25,7 @@ import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 import javafx.geometry.Insets;
 
-public class MyWalletsController implements Initializable {
+public class MyWalletsController {
     @FXML
     private VBox MyWallets;
     
@@ -48,48 +40,18 @@ public class MyWalletsController implements Initializable {
     
     private String apiKey = "4xsJgISQeJoIjLMkQfwSRc0sJQT-f0iC";
     
-    private ObservableList<String> walletsList = FXCollections.observableArrayList();
     private ObservableList<Token> walletTokensList = FXCollections.observableArrayList(); 
     
-    @Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		CompletableFuture.runAsync(() -> {
-			fetchWallets();
-		}).thenRun(() -> {
-			Platform.runLater(() -> {
-				afterWalletsFetch();
-			});
-		});	
-	}
-    
-    void fetchWallets() {
-        String query = "SELECT * FROM wallets";
-        List<Map<String, Object>> resultList = DatabaseManager.getQuery(query);
-        try {
-            if (resultList.size() == 0) {
-                walletsComboBox.setDisable(true);
-                return;
-            }
-            walletsComboBox.setDisable(false);
-            walletsComboBox.getItems().clear();
-			for (Map<String, Object> row : resultList) {
-				walletsList.add((String) row.get("address"));
-			}
-			walletsComboBox.setItems(walletsList);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-	void afterWalletsFetch() {
-		walletsComboBox.getSelectionModel().selectFirst();
+    public void setWalletsComboBox(ComboBox<String> walletsComboBox) {
+        this.walletsComboBox = walletsComboBox;
+        
 		fetchWalletTokens(walletsComboBox.getValue(), networksComboBox.getValue());
 		
 		walletsComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			walletTokensList.clear();
 			fetchWalletTokens(newValue, networksComboBox.getValue());
 		});
-	}
+    }
 
 	public void setNetworksComboBox(ComboBox<Network> networksComboBox) {
         this.networksComboBox = networksComboBox;

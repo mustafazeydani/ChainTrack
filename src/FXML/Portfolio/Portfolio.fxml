@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="Portfolio" prefHeight="739.0" prefWidth="1027.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Portfolio.PortfolioController">
+   <stylesheets>
+      <URL value="@../../stylesheets/MyWallets.css" />
+   </stylesheets>
+</VBox>
