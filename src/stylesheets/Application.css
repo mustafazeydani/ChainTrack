@@ -30,7 +30,8 @@
 }
 
 .text-white {
-	-fx-text-fill: white
+	-fx-text-fill: white;
+	-fx-fill: white;
 }
 
 .btn {
@@ -59,6 +60,33 @@
 	-fx-cursor: hand;
 	-fx-background-color: #a84f8d;
 	-fx-border-color: #a84f8d;
+}
+
+/* Tableview Styling */
+.table-view {
+	-fx-background-color: linear-gradient(to right bottom, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+}
+
+.table-view .column-header-background {
+	-fx-background-color: transparent;
+	-fx-padding: 2px;
+}
+
+.table-view .column-header {
+	-fx-background-color: transparent;
+}
+
+.table-view .column-header-background .label {
+	-fx-text-fill: white;
+}
+
+.table-row-cell {
+	-fx-background-color: transparent;
+}
+
+.table-view .table-cell {
+	-fx-text-fill: white;
+	-fx-alignment: center;
 }
 
 /* ScrollBar styling */

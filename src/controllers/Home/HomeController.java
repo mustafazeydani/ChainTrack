@@ -1,5 +1,6 @@
 package controllers.Home;
 
+import controllers.Auth.User;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
@@ -22,6 +23,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 public class HomeController implements Initializable {
+	
+	private User loggedInUser;
     
     @FXML
     private HBox NFTCardsLayout;
@@ -42,6 +45,10 @@ public class HomeController implements Initializable {
     public void initialize(URL arg0, ResourceBundle arg1) {
 		fetchNFTs();
 		fetchCryptocurrencies();
+	}
+    
+	public void setLoggedInUser(User loggedInUser) {
+		this.loggedInUser = loggedInUser;
 	}
     
     private void fetchNFTs() {

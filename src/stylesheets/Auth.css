@@ -1,0 +1,36 @@
+.left-panel {
+	-fx-background-color: linear-gradient(to right bottom, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+}
+
+.form-title {
+	-fx-font-size: 24px;
+}
+
+.form-subtitle {
+	-fx-font-size: 18px;
+}
+
+.form-copyright {
+	-fx-font-size: 14px;
+}
+
+.form-right-title, .form-username-label {
+	-fx-text-fill: #d16ba5;
+}
+
+.form-username-label, .form-password-label {
+	-fx-text-fill: #d16ba5;
+}
+
+.text-field:focused {
+	-fx-border-color: #d16ba5;
+}
+
+.signup-link {
+	-fx-text-fill: #d16ba5;
+}
+
+.signup-link:hover {
+	-fx-cursor: hand;
+    -fx-underline: true; /* Underline text on hover */
+}

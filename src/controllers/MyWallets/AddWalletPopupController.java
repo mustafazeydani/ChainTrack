@@ -1,4 +1,6 @@
 package controllers.MyWallets;
+
+import controllers.Auth.User;
 import controllers.DatabaseManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -14,6 +16,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 public class AddWalletPopupController {
+	private User loggedInUser;
+	
     @FXML
     private TextField address;
     
@@ -24,17 +28,14 @@ public class AddWalletPopupController {
     private Button cancel;
     
     @FXML
-    private Label noWalletsLabel;
-    
-    @FXML
     private ComboBox<String> walletsComboBox;
     
 	void setWalletsComboBox(ComboBox<String> walletsComboBox) {
 		this.walletsComboBox = walletsComboBox;
 	}
 	
-	void setNoWalletsLabel(Label noWalletsLabel) {
-		this.noWalletsLabel = noWalletsLabel;
+	void setLoggedInUser(User loggedInUser) {
+		this.loggedInUser = loggedInUser;
 	}
 
 	@FXML
@@ -42,12 +43,13 @@ public class AddWalletPopupController {
 	    try {
 	        String addressText = address.getText();
 	        String uuid = java.util.UUID.randomUUID().toString();
-	        String query = "INSERT INTO wallets (id, address) VALUES (?, ?)";
+	        String query = "INSERT INTO wallets (id, address, userId) VALUES (?, ?, ?)";
 	        
 	        // Use PreparedStatement to prevent SQL injection
 	        PreparedStatement preparedStatement = DatabaseManager.getConnection().prepareStatement(query);
 	        preparedStatement.setString(1, uuid);
 	        preparedStatement.setString(2, addressText);
+	        preparedStatement.setString(3, loggedInUser.getId());
 	        
 	        // Execute the update query
 	        int rowsAffected = preparedStatement.executeUpdate();
@@ -56,9 +58,6 @@ public class AddWalletPopupController {
 	            // Insertion successful
 	            if (walletsComboBox.isDisabled()) {
 	                walletsComboBox.setDisable(false);
-	            }
-	            if (noWalletsLabel.isVisible()) {
-	                noWalletsLabel.setVisible(false);
 	            }
 	            walletsComboBox.getItems().add(addressText);
 	        } else {

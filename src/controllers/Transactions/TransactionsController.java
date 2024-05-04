@@ -1,61 +1,96 @@
-package controllers.Portfolio;
+package controllers.Transactions;
 
-import java.net.URI;
+import controllers.Auth.User;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.util.ArrayList;
-import controllers.DatabaseManager;
-import controllers.Auth.User;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.Map;
-
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+import java.net.URI;
+import java.util.ResourceBundle;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import controllers.DatabaseManager;
 import controllers.Network;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
-
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.TableColumn;
+import javafx.fxml.Initializable;
 
-public class PortfolioController {
-	
+public class TransactionsController implements Initializable {
   private User loggedInUser;
   
   @FXML
   private VBox Portfolio;
+
   @FXML
   private ComboBox < String > walletsComboBox;
+
   @FXML
   private ComboBox < Network > networksComboBox;
 
   @FXML
-  private LineChart < String, Float > performanceChart;
+  private TableView < Transaction > transactionsTable;
+
+  @FXML
+  private TableColumn < Transaction, String > fromCol;
+
+  @FXML
+  private TableColumn < Transaction, String > toCol;
+
+  @FXML
+  private TableColumn < Transaction, String > valueCol;
+
+  @FXML
+  private TableColumn < Transaction, String > assetCol;
+
+  @FXML
+  private TableColumn < Transaction, LocalDateTime > blockTimestampCol;
+
+  @FXML
+  private TableColumn < Transaction, String > networkCol;
 
   private JSONArray incomingTransactions = new JSONArray();
   private JSONArray outgoingTransactions = new JSONArray();
 
   // Combine incoming and outgoing transactions into a list
-  List < JSONObject > transactions = new ArrayList < > ();
+  ObservableList < Transaction > transactions = FXCollections.observableArrayList();
 
   private String apiKey = "4xsJgISQeJoIjLMkQfwSRc0sJQT-f0iC";
   
-  public void setLoggedInUser(User user) {
-    this.loggedInUser = user;
+  @Override
+  public void initialize(URL arg0, ResourceBundle arg1) {
+    // TODO Auto-generated method stub
+    setCellValueFactories();
+    transactionsTable.setItems(transactions);
+  }
+  
+  public void setLoggedInUser(User loggedInUser) {
+	this.loggedInUser = loggedInUser;
+  }
+  
+  public void setCellValueFactories() {
+    fromCol.setCellValueFactory(new PropertyValueFactory < Transaction, String > ("from"));
+    toCol.setCellValueFactory(new PropertyValueFactory < Transaction, String > ("to"));
+    valueCol.setCellValueFactory(new PropertyValueFactory < Transaction, String > ("value"));
+    assetCol.setCellValueFactory(new PropertyValueFactory < Transaction, String > ("asset"));
+    blockTimestampCol.setCellValueFactory(new PropertyValueFactory < Transaction, LocalDateTime > ("block_timestamp"));
+    networkCol.setCellValueFactory(new PropertyValueFactory < Transaction, String > ("network"));
   }
 
   public void setWalletsComboBox(ComboBox < String > walletsComboBox) {
     this.walletsComboBox = walletsComboBox;
-
     fetchTransactions(walletsComboBox.getValue());
 
     walletsComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -63,10 +98,18 @@ public class PortfolioController {
     });
   }
 
+  public void setNetworksComboBox(ComboBox < Network > networksComboBox) {
+    this.networksComboBox = networksComboBox;
+
+    networksComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+      fetchTransactions(walletsComboBox.getValue());
+    });
+  }
+
   void fetchTransactions(String address) {
-	transactions.clear();
-	outgoingTransactions = new JSONArray();
-	incomingTransactions = new JSONArray();
+    transactions.clear();
+    outgoingTransactions = new JSONArray();
+    incomingTransactions = new JSONArray();
     String query = "SELECT * FROM transactions WHERE (`from` = '" + escapeString(address.toLowerCase()) + "' OR `to` = '" + escapeString(address.toLowerCase()) + "') AND network = '" + escapeString(networksComboBox.getValue().getSubdomain()) + "' ORDER BY block_timestamp DESC LIMIT 10";
     List < Map < String, Object >> resultList = DatabaseManager.getQuery(query);
     if (resultList.size() == 0) {
@@ -91,46 +134,12 @@ public class PortfolioController {
       }
       combineTransactions();
     }
-    handleLineChart();
   }
 
   //Method to escape special characters in the string
   private String escapeString(String value) {
     // Replace ' with '' to escape single quotes
     return value.replaceAll("'", "''");
-  }
-
-  private void combineTransactions() {
-    // Add incoming transactions to the list
-    for (int i = 0; i < incomingTransactions.length(); i++) {
-      transactions.add(incomingTransactions.getJSONObject(i));
-    }
-
-    // Add outgoing transactions to the list
-    for (int i = 0; i < outgoingTransactions.length(); i++) {
-      transactions.add(outgoingTransactions.getJSONObject(i));
-    }
-  }
-
-  void handleLineChart() {
-    performanceChart.getData().clear();
-    XYChart.Series < String, Float > series = new XYChart.Series < > ();
-    for (int i = 0; i < transactions.size(); i++) {
-      JSONObject transaction = transactions.get(i);
-      Float value = transaction.getBigDecimal("value").floatValue();
-      // convert i to string
-      series.getData().add(new XYChart.Data < > (Integer.toString(i + 1), value));
-      series.setName("Last 10 Transactions Performance " + transaction.getString("asset"));
-    }
-    performanceChart.getData().add(series);
-  }
-
-  public void setNetworksComboBox(ComboBox < Network > networksComboBox) {
-    this.networksComboBox = networksComboBox;
-
-    networksComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-      fetchTransactions(walletsComboBox.getValue());
-    });
   }
 
   void fetchIncomingTransactions(String address) {
@@ -227,43 +236,52 @@ public class PortfolioController {
 
   void proccessTransactions() {
     for (int i = 0; i < incomingTransactions.length(); i++) {
-      transactions.add(incomingTransactions.getJSONObject(i));
+      JSONObject transaction = incomingTransactions.getJSONObject(i);
+      transactions.add(new Transaction(transaction.getString("from"), transaction.getString("to"), transaction.getBigDecimal("value").floatValue(), transaction.getString("asset"), ZonedDateTime.parse(transaction.getJSONObject("metadata").getString("blockTimestamp")).toLocalDateTime(), networksComboBox.getValue().getSubdomain()));
     }
     for (int i = 0; i < outgoingTransactions.length(); i++) {
-      transactions.add(outgoingTransactions.getJSONObject(i));
+      JSONObject transaction = outgoingTransactions.getJSONObject(i);
+      transactions.add(new Transaction(transaction.getString("from"), transaction.getString("to"),
+        transaction.getBigDecimal("value").floatValue(), transaction.getString("asset"), ZonedDateTime
+        .parse(transaction.getJSONObject("metadata").getString("blockTimestamp")).toLocalDateTime(),
+        networksComboBox.getValue().getSubdomain()));
     }
-
-    System.out.println(transactions);
-    // Sort the list by timestamp in descending order
-    transactions = transactions.stream()
-      .sorted((a, b) -> {
-		String timestampA = a.getJSONObject("metadata").getString("blockTimestamp");
-		String timestampB = b.getJSONObject("metadata").getString("blockTimestamp");
-    	long timeA = Instant.parse(timestampA).toEpochMilli();
-        long timeB = Instant.parse(timestampB).toEpochMilli();
-        return Long.compare(timeB, timeA);
-      })
-      .collect(Collectors.toList());
-
-    // Get only last 10 transactions
-    transactions = transactions.stream().limit(10).collect(Collectors.toList());
   }
 
   void insertTransactionsToDB() {
     // Add transactions to database
-    for (JSONObject transaction: transactions) {
-      String timestampString = transaction.getJSONObject("metadata").getString("blockTimestamp");
-      ZonedDateTime zonedDateTime = ZonedDateTime.parse(timestampString);
-      LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-      String formattedTimestamp = localDateTime.format(formatter);
-
-      String query = "INSERT INTO transactions (`uuid`, `from`, `to`, `value`, `asset`, `block_timestamp`, `network`) VALUES ('" +
-	        java.util.UUID.randomUUID().toString() + "', '" +
-	        transaction.getString("from") + "', '" + transaction.getString("to") + "', '" +
-	        transaction.getBigDecimal("value") + "', '" + transaction.getString("asset") + "', '" +
-	        formattedTimestamp + "', '" + networksComboBox.getValue().getSubdomain() + "')";
+    for (int i = 0; i < transactions.size(); i++) {
+      Transaction transaction = transactions.get(i);
+      String uuid = java.util.UUID.randomUUID().toString();
+      String from = transaction.getFrom();
+      String to = transaction.getTo();
+      Float value = transaction.getValue();
+      String asset = transaction.getAsset();
+      LocalDateTime blockTimestamp = transaction.getBlock_timestamp();
+      String network = transaction.getNetwork();
+      String query = "INSERT INTO transactions (uuid, `from`, `to`, value, asset, block_timestamp, network) VALUES ('" + uuid + "', '" + from + "', '" + to + "', " + value + ", '" + asset + "', '" + blockTimestamp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "', '" + network + "')";
       DatabaseManager.updateQuery(query);
+    }
+  }
+
+  private void combineTransactions() {
+    // Add incoming transactions to the list
+    for (int i = 0; i < incomingTransactions.length(); i++) {
+      Transaction transaction = new Transaction(incomingTransactions.getJSONObject(i).getString("from"), incomingTransactions.getJSONObject(i).getString("to"), incomingTransactions.getJSONObject(i).getBigDecimal("value").floatValue(), incomingTransactions.getJSONObject(i).getString("asset"),
+        (LocalDateTime) incomingTransactions.getJSONObject(i).getJSONObject("metadata").get("blockTimestamp"),
+        networksComboBox.getValue().getSubdomain());
+      transactions.add(transaction);
+    }
+
+    //    // Add outgoing transactions to the list
+    for (int i = 0; i < outgoingTransactions.length(); i++) {
+      Transaction transaction = new Transaction(outgoingTransactions.getJSONObject(i).getString("from"),
+        outgoingTransactions.getJSONObject(i).getString("to"),
+        outgoingTransactions.getJSONObject(i).getBigDecimal("value").floatValue(),
+        outgoingTransactions.getJSONObject(i).getString("asset"),
+        (LocalDateTime) outgoingTransactions.getJSONObject(i).getJSONObject("metadata").get("blockTimestamp"),
+        networksComboBox.getValue().getSubdomain());
+      transactions.add(transaction);
     }
   }
 }

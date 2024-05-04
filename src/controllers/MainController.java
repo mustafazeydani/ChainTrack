@@ -1,7 +1,10 @@
 package controllers;
 
+import controllers.Home.HomeController;
 import controllers.MyWallets.MyWalletsController;
 import controllers.Portfolio.PortfolioController;
+import controllers.Auth.User;
+import controllers.Transactions.TransactionsController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.HashMap;
@@ -9,9 +12,6 @@ import java.util.List;
 import java.util.Map;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.fxml.Initializable;
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.scene.layout.AnchorPane;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
@@ -21,10 +21,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.scene.control.Label;
 import javafx.scene.control.ComboBox;
+import javafx.stage.Stage;
 
 import java.lang.reflect.Method;
 
-public class MainController implements Initializable {
+public class MainController {
+	private Stage primaryStage;
+	private User loggedInUser;
+	
 	/* Nav Menu */
 	@FXML
     private Button HomeNavBtn;
@@ -54,14 +58,15 @@ public class MainController implements Initializable {
 
     private ObservableList<Network> networksList = FXCollections.observableArrayList();
     
-    
-    public void initialize(URL arg0, ResourceBundle arg1) {
+	private void InitializeMainController() {
     	// Fetch the networks
     	fetchNetworks();
     	
     	// Add the controllers to the controllerMap
+    	controllerMap.put("Home", HomeController.class);
     	controllerMap.put("MyWallets", MyWalletsController.class);
     	controllerMap.put("Portfolio", PortfolioController.class);
+    	controllerMap.put("Transactions", TransactionsController.class);
     	
     	// Load the Home form
         loadForm("Home");
@@ -86,7 +91,17 @@ public class MainController implements Initializable {
         	switchNavigationButtonFocus(TransactionsNavBtn);
             loadForm("Transactions");
         });
-    }
+	}
+    
+	public void setPrimaryStage(Stage primaryStage) {
+		this.primaryStage = primaryStage;
+	}
+	
+	public void setLoggedInUser(User loggedInUser) {
+		this.loggedInUser = loggedInUser;
+		
+		InitializeMainController();
+	}
     
 	private void fetchNetworks() {
 		String query = "SELECT * FROM networks";
@@ -134,11 +149,15 @@ public class MainController implements Initializable {
             VBox form = loader.load();
             form.setId(name + "Form");
             
+            // Set the loggedInUser in the form
+            Method setLoggedInUserMethod = controllerMap.get(name).getMethod("setLoggedInUser", User.class);
+            setLoggedInUserMethod.invoke(loader.getController(), loggedInUser);
+            
             // Set the title
             mainTitle.setText(name);
             
 			if (!name.equals("Home")) {
-	            try {
+	            
 	                Method method = controllerMap.get(name).getMethod("setNetworksComboBox", ComboBox.class);
 					method.invoke(loader.getController(), networksComboBox);
 					
@@ -149,10 +168,6 @@ public class MainController implements Initializable {
 					ComboBox<String> walletsComboBox = (ComboBox<String>) getWalletsComboBox.invoke(walletsComboBoxLoader.getController());
 					Method setComboBoxMethod = controllerMap.get(name).getMethod("setWalletsComboBox", ComboBox.class);
 					setComboBoxMethod.invoke(loader.getController(), walletsComboBox);
-	            }
-				catch (Exception e) {
-					e.printStackTrace();
-				}
 			} else {
 				networksComboBox.setVisible(false);
 			}
@@ -167,7 +182,7 @@ public class MainController implements Initializable {
             
             // Set the currentForm to the new form
             currentForm = form;
-        } catch (IOException e) {
+        } catch (IOException | ReflectiveOperationException e) {
             e.printStackTrace();
         }
     }

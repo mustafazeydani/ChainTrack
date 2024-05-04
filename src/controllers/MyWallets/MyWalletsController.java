@@ -1,7 +1,9 @@
 package controllers.MyWallets;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import controllers.DatabaseManager;
 import controllers.Network;
+import controllers.Auth.User;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,6 +14,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
+import java.util.Map;
+
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ComboBox;
@@ -26,6 +31,8 @@ import javafx.scene.layout.GridPane;
 import javafx.geometry.Insets;
 
 public class MyWalletsController {
+	private User loggedInUser;
+	
     @FXML
     private VBox MyWallets;
     
@@ -40,10 +47,37 @@ public class MyWalletsController {
     
     private String apiKey = "4xsJgISQeJoIjLMkQfwSRc0sJQT-f0iC";
     
-    private ObservableList<Token> walletTokensList = FXCollections.observableArrayList(); 
+	private ObservableList<String> walletsList = FXCollections.observableArrayList();
+    private ObservableList<Token> walletTokensList = FXCollections.observableArrayList();
+    
+    void fetchWallets(User loggedInUser) {
+        String query = "SELECT * FROM wallets WHERE userId = '" + loggedInUser.getId() + "'";
+        List<Map<String, Object>> resultList = DatabaseManager.getQuery(query);
+        try {
+            if (resultList.size() == 0) {
+                walletsComboBox.setDisable(true);
+                return;
+            }
+            walletsComboBox.setDisable(false);
+            walletsComboBox.getItems().clear();
+			for (Map<String, Object> row : resultList) {
+				walletsList.add((String) row.get("address"));
+			}
+			walletsComboBox.setItems(walletsList);
+			walletsComboBox.getSelectionModel().selectFirst();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+	public void setLoggedInUser(User loggedInUser) {
+		this.loggedInUser = loggedInUser;
+	}
     
     public void setWalletsComboBox(ComboBox<String> walletsComboBox) {
         this.walletsComboBox = walletsComboBox;
+        
+        fetchWallets(loggedInUser);
         
 		fetchWalletTokens(walletsComboBox.getValue(), networksComboBox.getValue());
 		
@@ -167,6 +201,7 @@ public class MyWalletsController {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../FXML/MyWallets/AddWalletPopup.fxml"));
 	        Parent root = loader.load();
 	        AddWalletPopupController controller = loader.getController();
+	        controller.setLoggedInUser(loggedInUser);
 	        controller.setWalletsComboBox(walletsComboBox);
 	        Stage stage = new Stage();
 	        stage.initModality(Modality.APPLICATION_MODAL);
