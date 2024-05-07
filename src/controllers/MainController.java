@@ -166,6 +166,8 @@ public class MainController {
 					// Get the walletsComboBox from the walletsComboBoxLoader and set it in the form
 					Method getWalletsComboBox = walletsComboBoxLoader.getController().getClass().getMethod("getWalletsComboBox");
 					ComboBox<String> walletsComboBox = (ComboBox<String>) getWalletsComboBox.invoke(walletsComboBoxLoader.getController());
+					Method setWalletsComboBoxLoggedInUser = walletsComboBoxLoader.getController().getClass().getMethod("setLoggedInUser", User.class);
+					setWalletsComboBoxLoggedInUser.invoke(walletsComboBoxLoader.getController(), loggedInUser);
 					Method setComboBoxMethod = controllerMap.get(name).getMethod("setWalletsComboBox", ComboBox.class);
 					setComboBoxMethod.invoke(loader.getController(), walletsComboBox);
 			} else {

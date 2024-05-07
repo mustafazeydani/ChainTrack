@@ -88,11 +88,17 @@ public class HomeController implements Initializable {
             NFTCardController controller = loader.getController();
             JSONArray externalLinks = nft.getJSONArray("explorers");
             String link = externalLinks != null && externalLinks.length() > 0 ? externalLinks.getJSONObject(0).optString("link", "") : "";
+            Integer numberOfUniqueAddresses = null; // Initialize to null initially
+            if (!nft.isNull("number_of_unique_addresses")) {
+                numberOfUniqueAddresses = nft.getInt("number_of_unique_addresses");
+            } else {
+            	numberOfUniqueAddresses = 0;
+            }
             controller.setData(
             	nft.getString("name"), 
             	formatDouble(nft.getJSONObject("volume_24h").getDouble("usd")), 
             	formatDouble(nft.getJSONObject("floor_price").getDouble("usd")), 
-            	formatDouble(nft.getInt("number_of_unique_addresses")), 
+            	formatDouble(numberOfUniqueAddresses), 
             	nft.getJSONObject("image").getString("small"),
             	link
             );

@@ -50,34 +50,12 @@ public class MyWalletsController {
 	private ObservableList<String> walletsList = FXCollections.observableArrayList();
     private ObservableList<Token> walletTokensList = FXCollections.observableArrayList();
     
-    void fetchWallets(User loggedInUser) {
-        String query = "SELECT * FROM wallets WHERE userId = '" + loggedInUser.getId() + "'";
-        List<Map<String, Object>> resultList = DatabaseManager.getQuery(query);
-        try {
-            if (resultList.size() == 0) {
-                walletsComboBox.setDisable(true);
-                return;
-            }
-            walletsComboBox.setDisable(false);
-            walletsComboBox.getItems().clear();
-			for (Map<String, Object> row : resultList) {
-				walletsList.add((String) row.get("address"));
-			}
-			walletsComboBox.setItems(walletsList);
-			walletsComboBox.getSelectionModel().selectFirst();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
 	public void setLoggedInUser(User loggedInUser) {
 		this.loggedInUser = loggedInUser;
 	}
     
     public void setWalletsComboBox(ComboBox<String> walletsComboBox) {
         this.walletsComboBox = walletsComboBox;
-        
-        fetchWallets(loggedInUser);
         
 		fetchWalletTokens(walletsComboBox.getValue(), networksComboBox.getValue());
 		
