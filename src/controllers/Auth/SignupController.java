@@ -122,12 +122,12 @@ public class SignupController implements Initializable {
         byte[] salt = generateSalt();
         String hashedPassword = hashPassword(password, salt);
 
-		String id = UUID.randomUUID().toString();
+		String uuid = UUID.randomUUID().toString();
         
 		// Insert user
-		query = "INSERT INTO users (id, username, password, salt) VALUES ('" + id + "', '" + username + "', '" + hashedPassword + "', '" + Base64.getEncoder().encodeToString(salt) + "')";
+		query = "INSERT INTO users (uuid, username, password, salt) VALUES ('" + uuid + "', '" + username + "', '" + hashedPassword + "', '" + Base64.getEncoder().encodeToString(salt) + "')";
 		DatabaseManager.updateQuery(query);
-		User user = new User(id ,username);
+		User user = new User(uuid ,username);
 		return user;
 	}
 

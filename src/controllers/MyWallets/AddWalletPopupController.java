@@ -43,7 +43,7 @@ public class AddWalletPopupController {
 	    try {
 	        String addressText = address.getText();
 	        String uuid = java.util.UUID.randomUUID().toString();
-	        String query = "INSERT INTO wallets (id, address, userId) VALUES (?, ?, ?)";
+	        String query = "INSERT INTO wallets (uuid, address, userId) VALUES (?, ?, ?)";
 	        
 	        // Use PreparedStatement to prevent SQL injection
 	        PreparedStatement preparedStatement = DatabaseManager.getConnection().prepareStatement(query);

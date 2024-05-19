@@ -86,7 +86,7 @@ public class LoginController implements Initializable {
 		String saltAsString = (String) user.get("salt");
 	    byte[] salt = Base64.getDecoder().decode(saltAsString);
 		if (verifyPassword(password, storedHashedPassword, salt)) {
-			User loggedInUser = new User((String) user.get("id"), (String) user.get("username"));
+			User loggedInUser = new User((String) user.get("uuid"), (String) user.get("username"));
 			// Redirect to Main form
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../FXML/Main.fxml"));
 			try {
